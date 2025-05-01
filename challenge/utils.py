@@ -27,16 +27,18 @@ def is_valid_image(data):
 
 
 def sanitize_url(url):
-    """
-    Sanitize URL to prevent command injection while allowing short curl options.
-    Blocks: ;, &, |, `, $(...), whitespace, long options (--*), URL-encoded shell chars
-    """
-    blocked_characters = [] #current_app.config['BLOCKED_CHARACTERS']
+    # first check: blocked characters
+    blocked_characters = current_app.config['BLOCKED_CHARACTERS']
     for char in blocked_characters:
         if char in url:
+            print(f"Blocked character: {char}")
             return False
+    
+    # secound check: URL scheme validation
+    if not re.match(r'^https?://', url):
+        print(f"Invalid URL scheme: {url}")
+        return False
 
-    # Removed URL scheme validation to allow our payload
     return True
 
 
