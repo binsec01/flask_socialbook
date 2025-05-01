@@ -1,1 +1,0 @@
-CTF{curl_short_options_are_powerful} 
